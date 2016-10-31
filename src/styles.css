@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+	height: 100vh;
+  margin: 0;
+  background: #37474F;
+  color: #EEE;
+}
+
+/* theming scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #607D8B;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #aaaab8;
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: transparent;
+}

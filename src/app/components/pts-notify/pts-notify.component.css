@@ -1,0 +1,13 @@
+.mdl-snackbar {
+	margin-bottom: 20px;
+}
+
+.snackbar-normal {
+	background: #323232;
+	color: #FFFFFF;
+}
+
+.snackbar-error {
+	background: #F44336;
+	color: #FFFFFF;
+}

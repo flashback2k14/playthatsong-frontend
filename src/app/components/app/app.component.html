@@ -1,0 +1,11 @@
+<pts-login #ptsLogin 
+  (notifyUser)="handleNotifyUser($event)"
+  (loginData)="handleLoginData($event)">
+</pts-login>
+
+<pts-toolbar #ptsToolbar
+  (openLogin)="handleOpenLogin()"
+  (openEvent)="handleOpenEvent()">
+</pts-toolbar>
+
+<pts-notify #ptsNotify></pts-notify>
