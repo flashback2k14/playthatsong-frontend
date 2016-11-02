@@ -11,6 +11,8 @@ import { PtsToolbarComponent } from './components/pts-toolbar/pts-toolbar.compon
 import { AuthService } from "./services/auth.service";
 import { StorageService } from "./services/storage.service";
 
+import { AuthHelper } from "./helpers/auth.helper";
+
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { StorageService } from "./services/storage.service";
   ],
   providers: [
     AuthService,
-    StorageService
+    StorageService,
+    AuthHelper
   ],
   bootstrap: [AppComponent]
 })

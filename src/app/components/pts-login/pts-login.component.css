@@ -4,6 +4,18 @@
   color: #EEE;
 }
 
+.dialog-styling_title {
+  padding: 15px 20px 5px 20px;
+}
+
+.dialog-styling_content {
+  padding: 10px 20px 5px 20px;
+}
+
+.dialog-styling_actions {
+  padding: 0 8px 10px 20px;
+}
+
 .input-styling {
   color: #EEE;
 }

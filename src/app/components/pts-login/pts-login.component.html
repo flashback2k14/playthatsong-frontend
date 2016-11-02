@@ -1,6 +1,6 @@
 <dialog class="mdl-dialog dialog-styling" #loginDialog>
-  <h4 class="mdl-dialog__title">login</h4>
-  <div class="mdl-dialog__content">
+  <h4 class="mdl-dialog__title dialog-styling_title">login</h4>
+  <div class="mdl-dialog__content dialog-styling_content">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label input-styling"
       #txtUsernameContainer>
       <input class="mdl-textfield__input" type="text" #txtUsername id="username">
@@ -12,14 +12,12 @@
       <label class="mdl-textfield__label input-styling" for="password">enter your password</label>
     </div>
   </div>
-  <div class="mdl-dialog__actions">
+  <div class="mdl-dialog__actions dialog-styling_actions">
     <button type="button" class="mdl-button button-styling" 
-      (click)="login()">
-      login
+      (click)="login()">login
     </button>
     <button type="button" class="mdl-button button-styling" 
-      (click)="cancelDialog()">
-      cancel
+      (click)="cancelDialog()">cancel
     </button>
   </div>
 </dialog>

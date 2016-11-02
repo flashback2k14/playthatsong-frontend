@@ -9,6 +9,7 @@ export class StorageService {
    * storage keys
    */
   TOKENKEY: string = "PLAYTHATSONGAUTHTOKEN";
+  EXPIREKEY: string = "PLAYTHATSONGAUTHEXPIRE"
 
   /**
    * Save Items
