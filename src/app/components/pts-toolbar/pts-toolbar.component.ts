@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'pts-toolbar',
@@ -11,6 +11,8 @@ export class PtsToolbarComponent {
   @Output() openRegister: EventEmitter<void>;
   @Output() openEvent: EventEmitter<void>;
   @Output() logoutUser: EventEmitter<void>;
+
+  @Input() isLoggedIn: boolean;
 
   private title: string = "play that song!";
 

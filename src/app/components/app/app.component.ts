@@ -18,10 +18,14 @@ export class AppComponent implements OnInit {
   @ViewChild("ptsLogin") ptsLogin;
   @ViewChild("ptsNotify") ptsNotify;
 
+  private userIsLoggedIn: boolean;
+
   constructor (
     private storageService: StorageService,
     private authHelper: AuthHelper
-  ) { }
+  ) { 
+    this.userIsLoggedIn = false;
+  }
 
   ngOnInit () {
     this.storageService.getMany([this.storageService.TOKENKEY, this.storageService.EXPIREKEY])
@@ -38,6 +42,8 @@ export class AppComponent implements OnInit {
           this.handleOpenLogin();
           return;
         }
+        // set flags
+        this.userIsLoggedIn = true;
         // show message if all is great
         this.handleNotifyUser(new NotifyMessage(true, "User successfully logged in!"));
       })
@@ -52,7 +58,10 @@ export class AppComponent implements OnInit {
     let tokenItem: LSItem = new LSItem(this.storageService.TOKENKEY, ld.token);
     let expireItem: LSItem = new LSItem(this.storageService.EXPIREKEY, ld.expires.toString());
     this.storageService.saveMany([tokenItem, expireItem])
-      .then(msg => this.handleNotifyUser(msg))
+      .then(msg => {
+        this.handleNotifyUser(msg);
+        this.userIsLoggedIn = true;
+      })
       .catch(error => this.handleNotifyUser(error));
   }
 
@@ -74,6 +83,7 @@ export class AppComponent implements OnInit {
         this.handleNotifyUser(msg);
         this.handleNotifyUser(new NotifyMessage(true, "User successfully logged out!"));
         this.handleOpenLogin();
+        this.userIsLoggedIn = false;
       })
       .catch(error => this.handleNotifyUser(error));
   }

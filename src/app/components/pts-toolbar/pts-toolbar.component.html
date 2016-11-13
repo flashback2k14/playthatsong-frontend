@@ -4,21 +4,32 @@
   </div>
   <div class="mdl-cell mdl-cell--6-col"></div>
   <div class="mdl-cell mdl-cell--2-col mdl-typography--text-right">
+    <!-- login -->
     <button class="mdl-button mdl-js-button mdl-button--icon icon-spacing"
-      (click)="openLoginDialog()">
+      (click)="openLoginDialog()" id="btnLogin"
+      *ngIf="!isLoggedIn">
       <i class="material-icons text-color">person</i>
     </button>
+    <div class="mdl-tooltip tooltip-styling" for="btnLogin">Open User Login Dialog</div>
+    <!-- register -->
     <button class="mdl-button mdl-js-button mdl-button--icon icon-spacing"
-      (click)="openRegisterDialog()">
+      (click)="openRegisterDialog()" id="btnRegister"
+      *ngIf="!isLoggedIn">
       <i class="material-icons text-color">person_add</i>
     </button>
+    <div class="mdl-tooltip tooltip-styling" for="btnRegister">Open User Signup Dialog</div>
+    <!-- event -->
     <button class="mdl-button mdl-js-button mdl-button--icon icon-spacing"
-      (click)="openEventDialog()">
+      (click)="openEventDialog()" id="btnEvent"
+      *ngIf="isLoggedIn">
       <i class="material-icons text-color">event</i>
     </button>
+    <div class="mdl-tooltip tooltip-styling" for="btnEvent">Open Event Dialog</div>
+    <!-- logout -->
     <button class="mdl-button mdl-js-button mdl-button--icon icon-spacing"
-      (click)="logout()">
-      <i class="material-icons text-color">eject</i>
+      (click)="logout()" id="btnLogout">
+      <i class="material-icons text-color">exit_to_app</i>
     </button>
+    <div class="mdl-tooltip tooltip-styling" for="btnLogout">Log out the User</div>
   </div>
 </div>
