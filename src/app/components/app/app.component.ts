@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   @ViewChild("ptsNotify") ptsNotify;
 
   private userIsLoggedIn: boolean;
+  private userName: string;
 
   constructor (
     private storageService: StorageService,
@@ -28,7 +29,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit () {
-    this.storageService.getMany([this.storageService.TOKENKEY, this.storageService.EXPIREKEY])
+    this.storageService.getMany([this.storageService.TOKENKEY, 
+                                this.storageService.EXPIREKEY,
+                                this.storageService.USERNAMEKEY])
       .then(items => {
         // check if token is available
         if (!items[0].value) {
@@ -44,6 +47,8 @@ export class AppComponent implements OnInit {
         }
         // set flags
         this.userIsLoggedIn = true;
+        // set username
+        this.userName = items[2].value;
         // show message if all is great
         this.handleNotifyUser(new NotifyMessage(true, "User successfully logged in!"));
       })
@@ -57,10 +62,12 @@ export class AppComponent implements OnInit {
   private handleLoginData (ld: LoginData): void {
     let tokenItem: LSItem = new LSItem(this.storageService.TOKENKEY, ld.token);
     let expireItem: LSItem = new LSItem(this.storageService.EXPIREKEY, ld.expires.toString());
-    this.storageService.saveMany([tokenItem, expireItem])
+    let usernameItem: LSItem = new LSItem(this.storageService.USERNAMEKEY, ld.user.name);
+    this.storageService.saveMany([tokenItem, expireItem, usernameItem])
       .then(msg => {
         this.handleNotifyUser(msg);
         this.userIsLoggedIn = true;
+        this.userName = ld.user.name;
       })
       .catch(error => this.handleNotifyUser(error));
   }
@@ -73,17 +80,16 @@ export class AppComponent implements OnInit {
     alert("Register Dialog");
   }
 
-  private handleOpenEvent (): void {
-    alert("Event Dialog");
-  }
-
   private handleLogoutUser (): void {
-    this.storageService.removeMany([this.storageService.TOKENKEY, this.storageService.EXPIREKEY])
+    this.storageService.removeMany([this.storageService.TOKENKEY, 
+                                    this.storageService.EXPIREKEY,
+                                    this.storageService.USERNAMEKEY])
       .then(msg => {
         this.handleNotifyUser(msg);
         this.handleNotifyUser(new NotifyMessage(true, "User successfully logged out!"));
         this.handleOpenLogin();
         this.userIsLoggedIn = false;
+        this.userName = null;
       })
       .catch(error => this.handleNotifyUser(error));
   }

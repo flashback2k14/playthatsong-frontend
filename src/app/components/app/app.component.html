@@ -6,9 +6,9 @@
 <pts-toolbar #ptsToolbar
   (openLogin)="handleOpenLogin()"
   (openRegister)="handleOpenRegister()"
-  (openEvent)="handleOpenEvent()"
   (logoutUser)="handleLogoutUser()"
-  [isLoggedIn]="userIsLoggedIn">
+  [isLoggedIn]="userIsLoggedIn"
+  [username]="userName">
 </pts-toolbar>
 
 <pts-notify #ptsNotify></pts-notify>
