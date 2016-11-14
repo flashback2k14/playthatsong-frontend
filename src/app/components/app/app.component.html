@@ -1,7 +1,14 @@
 <pts-login #ptsLogin 
   (notifyUser)="handleNotifyUser($event)"
-  (loginData)="handleLoginData($event)">
+  (loginUser)="handleLoginRegisterUser($event)"
+  (loginCanceled)="handleDialogCanceled()">
 </pts-login>
+
+<pts-register #ptsRegister
+  (notifyUser)="handleNotifyUser($event)"
+  (registerUser)="handleLoginRegisterUser($event)"
+  (registerCanceled)="handleDialogCanceled()">
+</pts-register>
 
 <pts-toolbar #ptsToolbar
   (openLogin)="handleOpenLogin()"

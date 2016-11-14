@@ -16,6 +16,7 @@ import { LSItem } from "../../models/ls-item";
 
 export class AppComponent implements OnInit {
   @ViewChild("ptsLogin") ptsLogin;
+  @ViewChild("ptsRegister") ptsRegister;
   @ViewChild("ptsNotify") ptsNotify;
 
   private userIsLoggedIn: boolean;
@@ -55,11 +56,17 @@ export class AppComponent implements OnInit {
       .catch(error => this.handleNotifyUser(error));
   }
 
+  /**
+   * NOTIFICATION
+   */
   private handleNotifyUser (nm: NotifyMessage): void {
     this.ptsNotify.showMessage(nm.success, nm.message);
   }
 
-  private handleLoginData (ld: LoginData): void {
+  /**
+   * LOGIN / REGISTER
+   */
+  private handleLoginRegisterUser (ld: LoginData): void {
     let tokenItem: LSItem = new LSItem(this.storageService.TOKENKEY, ld.token);
     let expireItem: LSItem = new LSItem(this.storageService.EXPIREKEY, ld.expires.toString());
     let usernameItem: LSItem = new LSItem(this.storageService.USERNAMEKEY, ld.user.name);
@@ -72,14 +79,9 @@ export class AppComponent implements OnInit {
       .catch(error => this.handleNotifyUser(error));
   }
 
-  private handleOpenLogin (): void {
-    this.ptsLogin.openDialog();
-  }
-
-  private handleOpenRegister (): void {
-    alert("Register Dialog");
-  }
-
+  /**
+   * LOGOUT
+   */
   private handleLogoutUser (): void {
     this.storageService.removeMany([this.storageService.TOKENKEY, 
                                     this.storageService.EXPIREKEY,
@@ -92,5 +94,20 @@ export class AppComponent implements OnInit {
         this.userName = null;
       })
       .catch(error => this.handleNotifyUser(error));
+  }
+
+  /**
+   * OPEN DIALOGS
+   */
+  private handleOpenLogin (): void {
+    this.ptsLogin.openDialog();
+  }
+
+  private handleOpenRegister (): void {
+    this.ptsRegister.openDialog();
+  }
+
+  private handleDialogCanceled (): void {
+    this.userName = "view only";
   }
 }

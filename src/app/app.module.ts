@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { PtsNotifyComponent } from './components/pts-notify/pts-notify.component';
 import { AppComponent } from './components/app/app.component';
 import { PtsLoginComponent } from './components/pts-login/pts-login.component';
+import { PtsRegisterComponent } from './components/pts-register/pts-register.component';
 import { PtsToolbarComponent } from './components/pts-toolbar/pts-toolbar.component';
 
 import { AuthService } from "./services/auth.service";
@@ -19,6 +20,7 @@ import { AuthHelper } from "./helpers/auth.helper";
     PtsNotifyComponent,
     AppComponent,
     PtsLoginComponent,
+    PtsRegisterComponent,
     PtsToolbarComponent
   ],
   imports: [

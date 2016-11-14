@@ -4,6 +4,7 @@ import { Http, Response } from "@angular/http";
 import "rxjs/add/operator/toPromise";
 
 import { LoginData } from "../models/login-data";
+import { RegisterData } from "./../models/register-data";
 import { NotifyMessage } from "../models/notify-message";
 
 
@@ -28,8 +29,26 @@ export class AuthService {
       .catch(this.extractError);
   }
 
+  register (username: string, password: string): Promise<RegisterData> {
+    let user = {
+      name: username,
+      password: password
+    };
+    
+    return this.http
+      .post(`${this.baseUrl}/api/v1/auth/reigster`, user)
+      .toPromise()
+      .then(this.extractRegisterData)
+      .catch(this.extractError);
+  }
+
   private extractData (res: Response) {
     let data: LoginData = res.json();
+    return data || { };
+  }
+
+  private extractRegisterData (res: Response) {
+    let data: RegisterData = res.json();
     return data || { };
   }
 
