@@ -1,4 +1,5 @@
 import { Component, ViewChild, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
 import { StorageService } from "../../services/storage.service";
 import { AuthHelper } from "./../../helpers/auth.helper";
@@ -6,6 +7,7 @@ import { AuthHelper } from "./../../helpers/auth.helper";
 import { LoginData } from "../../models/login-data";
 import { NotifyMessage } from "../../models/notify-message";
 import { LSItem } from "../../models/ls-item";
+import { User } from "./../../models/user";
 
 
 @Component({
@@ -24,7 +26,8 @@ export class AppComponent implements OnInit {
 
   constructor (
     private storageService: StorageService,
-    private authHelper: AuthHelper
+    private authHelper: AuthHelper,
+    private router: Router
   ) { 
     this.userIsLoggedIn = false;
   }
@@ -32,7 +35,7 @@ export class AppComponent implements OnInit {
   ngOnInit () {
     this.storageService.getMany([this.storageService.TOKENKEY, 
                                 this.storageService.EXPIREKEY,
-                                this.storageService.USERNAMEKEY])
+                                this.storageService.USEROBJECTKEY])
       .then(items => {
         // check if token is available
         if (!items[0].value) {
@@ -48,8 +51,9 @@ export class AppComponent implements OnInit {
         }
         // set flags
         this.userIsLoggedIn = true;
-        // set username
-        this.userName = items[2].value;
+        // navigate to specific route
+        const user = this.authHelper.convertStringToUser(items[2].value);
+        this.decideWhereToGo(user);
         // show message if all is great
         this.handleNotifyUser(new NotifyMessage(true, "User successfully logged in!"));
       })
@@ -69,12 +73,15 @@ export class AppComponent implements OnInit {
   private handleLoginRegisterUser (ld: LoginData): void {
     let tokenItem: LSItem = new LSItem(this.storageService.TOKENKEY, ld.token);
     let expireItem: LSItem = new LSItem(this.storageService.EXPIREKEY, ld.expires.toString());
-    let usernameItem: LSItem = new LSItem(this.storageService.USERNAMEKEY, ld.user.name);
-    this.storageService.saveMany([tokenItem, expireItem, usernameItem])
+    let userItem: LSItem = new LSItem(this.storageService.USEROBJECTKEY, this.authHelper.convertUserToString(ld.user));
+    this.storageService.saveMany([tokenItem, expireItem, userItem])
       .then(msg => {
+        // show user info
         this.handleNotifyUser(msg);
+        // set flag
         this.userIsLoggedIn = true;
-        this.userName = ld.user.name;
+        // navigate to specific route
+        this.decideWhereToGo(ld.user);
       })
       .catch(error => this.handleNotifyUser(error));
   }
@@ -85,11 +92,12 @@ export class AppComponent implements OnInit {
   private handleLogoutUser (): void {
     this.storageService.removeMany([this.storageService.TOKENKEY, 
                                     this.storageService.EXPIREKEY,
-                                    this.storageService.USERNAMEKEY])
+                                    this.storageService.USEROBJECTKEY])
       .then(msg => {
         this.handleNotifyUser(msg);
         this.handleNotifyUser(new NotifyMessage(true, "User successfully logged out!"));
         this.handleOpenLogin();
+        this.navigateTo("/");
         this.userIsLoggedIn = false;
         this.userName = null;
       })
@@ -109,5 +117,31 @@ export class AppComponent implements OnInit {
 
   private handleDialogCanceled (): void {
     this.userName = "view only";
+  }
+
+  /**
+   * ROUTING
+   */
+  private decideWhereToGo (user: User): void {
+    // if admin, go to admin route
+    if (user.admin) {
+      this.navigateTo("/admin");
+      this.userName = `${user.name} [A]`;
+    }
+    // if deejay, go to dj route
+    if (user.deejay) {
+      this.navigateTo("/deejay");
+      this.userName = `${user.name} [D]`;
+    }
+    // else stay at user route
+    if (!user.admin && !user.deejay) {
+      this.navigateTo("/");
+      this.userName = `${user.name} [10]`;
+    }
+  }
+
+  private navigateTo (route: string): void {
+    let link = [route];
+    this.router.navigate(link);
   }
 }

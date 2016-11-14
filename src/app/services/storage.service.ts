@@ -10,7 +10,7 @@ export class StorageService {
    */
   TOKENKEY: string = "PLAYTHATSONGAUTHTOKEN";
   EXPIREKEY: string = "PLAYTHATSONGAUTHEXPIRE";
-  USERNAMEKEY: string = "PLAYTHATSONGUSERNAME";
+  USEROBJECTKEY: string = "PLAYTHATSONGUSEROBJ";
 
   /**
    * Save Items
