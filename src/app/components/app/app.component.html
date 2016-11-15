@@ -18,6 +18,17 @@
   [username]="userName">
 </pts-toolbar>
 
-<router-outlet></router-outlet>
+<pts-content #ptsContent 
+  *ngIf="showUserContent"
+  (notifyUser)="handleNotifyUser($event)">
+</pts-content>
+
+<pts-content-admin #ptsContentAdmin
+  *ngIf="showAdminContent">
+</pts-content-admin>
+
+<pts-content-deejay #ptsContentDeejay
+  *ngIf="showDeejayContent">
+</pts-content-deejay>
 
 <pts-notify #ptsNotify></pts-notify>

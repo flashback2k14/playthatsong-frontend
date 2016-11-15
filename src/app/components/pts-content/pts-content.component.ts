@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
-import { Subscription } from "rxjs/Subscription";
+import { Component, Output, EventEmitter, ViewChild } from "@angular/core";
 
 import { UserService } from "./../../services/user.service";
 import { StorageService } from "./../../services/storage.service";
-import { FuckRouterOutletService } from "./../../services/fuckrouteroutlet.service";
 
 import { User } from "./../../models/user";
+import { NotifyMessage } from "./../../models/notify-message";  
 
 
 @Component({
@@ -14,52 +13,26 @@ import { User } from "./../../models/user";
   styleUrls: ['./pts-content.component.css']
 })
 
-export class PtsContentComponent implements OnInit, OnDestroy {
-  @ViewChild("ptsNotify") ptsNotify;
-  
+export class PtsContentComponent {
+  @Output() notifyUser: EventEmitter<NotifyMessage>;
+
   private deejays: User[];
-  private loadDataSubscription: Subscription;
-  private clearDataSubscription: Subscription;
 
   constructor (
     private userService: UserService,
-    private storageService: StorageService,
-    private fuckRouterOutletService: FuckRouterOutletService
+    private storageService: StorageService
   ) { 
-    console.log("PtsContentComponent - constructor");
-    this.loadDataSubscription = this.fuckRouterOutletService
-                                  .loadUserComponentData$.subscribe(() => {
-                                    this.loadData();
-                                  });
-    this.clearDataSubscription = this.fuckRouterOutletService
-                                  .clearUserComponentData$.subscribe(() => {
-                                    this.clearData();
-                                  });
-  }
-
-  ngOnInit () {
-    console.log("PtsContentComponent - ngOnInit");
-    this.loadData();
-  }
-
-  ngOnDestroy () {
-    console.log("PtsContentComponent - ngOnDestroy");
-    this.loadDataSubscription.unsubscribe();
-    this.clearDataSubscription.unsubscribe();
+    this.notifyUser = new EventEmitter<NotifyMessage>();
   }
 
   loadData (): void {
     this.storageService.getOne(this.storageService.TOKENKEY)
       .then(tokenItem => {
-        this.userService.getDeejays("tokenItem.value")
+        this.userService.getDeejays(tokenItem.value)
           .then(data => this.deejays = data)
-          .catch(error => {
-            this.ptsNotify.showMessage(error.success, error.message);
-          });
+          .catch(error => this.notifyUser.emit(error));
       })
-      .catch(error => {
-        this.ptsNotify.showMessage(error.success, error.message);
-      });
+      .catch(error => this.notifyUser.emit(error));
   }
 
   clearData(): void {

@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewChild, AfterViewInit, AfterViewChecked } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, ViewChild, AfterViewInit } from "@angular/core";
 
 import { PtsLoginComponent } from "./../pts-login/pts-login.component";
 import { PtsRegisterComponent } from "./../pts-register/pts-register.component";
+import { PtsContentComponent } from "./../pts-content/pts-content.component";
 import { PtsNotifyComponent } from "./../pts-notify/pts-notify.component";
 
 import { StorageService } from "../../services/storage.service";
-import { FuckRouterOutletService } from "./../../services/fuckrouteroutlet.service";
 import { AuthHelper } from "./../../helpers/auth.helper";
 
 import { LoginData } from "../../models/login-data";
@@ -24,18 +23,24 @@ import { User } from "./../../models/user";
 export class AppComponent implements AfterViewInit {
   @ViewChild("ptsLogin") ptsLogin: PtsLoginComponent;
   @ViewChild("ptsRegister") ptsRegister: PtsRegisterComponent;
+  @ViewChild("ptsContent") ptsContent: PtsContentComponent;
   @ViewChild("ptsNotify") ptsNotify: PtsNotifyComponent;
 
   private userIsLoggedIn: boolean;
   private userName: string;
+  private showUserContent: boolean;
+  private showAdminContent: boolean;
+  private showDeejayContent: boolean;
 
   constructor (
     private storageService: StorageService,
-    private fuckRouterOutletService: FuckRouterOutletService,
-    private authHelper: AuthHelper,
-    private router: Router
+    private authHelper: AuthHelper
   ) { 
     this.userIsLoggedIn = false;
+    this.userName = null;
+    this.showUserContent = true;
+    this.showAdminContent = false;
+    this.showDeejayContent = false;
   }
 
   ngAfterViewInit () {
@@ -103,8 +108,8 @@ export class AppComponent implements AfterViewInit {
         this.handleNotifyUser(msg);
         this.handleNotifyUser(new NotifyMessage(true, "User successfully logged out!"));
         this.handleOpenLogin();
-        this.navigateTo("/");
-        this.fuckRouterOutletService.clearUserComponentData();
+        this.navigateTo("home");
+        this.ptsContent.clearData();
         this.userIsLoggedIn = false;
         this.userName = null;
       })
@@ -124,6 +129,7 @@ export class AppComponent implements AfterViewInit {
 
   private handleDialogCanceled (): void {
     this.userName = "view only";
+    this.navigateTo("home");
   }
 
   /**
@@ -132,24 +138,47 @@ export class AppComponent implements AfterViewInit {
   private decideWhereToGo (user: User): void {
     // if admin, go to admin route
     if (user.admin) {
-      this.navigateTo("/admin");
+      this.navigateTo("admin");
       this.userName = `${user.name} [A]`;
     }
     // if deejay, go to dj route
     if (user.deejay) {
-      this.navigateTo("/deejay");
+      this.navigateTo("deejay");
       this.userName = `${user.name} [D]`;
     }
     // if user, go to user route
     if (!user.admin && !user.deejay) {
-      this.navigateTo("/");
+      this.navigateTo("home");
       this.userName = `${user.name} [10]`;
-      this.fuckRouterOutletService.loadUserComponentData();
+      this.ptsContent.loadData();
     }
   }
 
-  private navigateTo (route: string): void {
-    let link = [route];
-    this.router.navigate(link);
+  private navigateTo (contentArea: string): void {
+    switch (contentArea) {
+      case "home":
+        this.showUserContent = true;
+        this.showAdminContent = false;
+        this.showDeejayContent = false;
+        window.location.hash = "home";
+        break;
+
+      case "admin":
+        this.showUserContent = false;
+        this.showAdminContent = true;
+        this.showDeejayContent = false;
+        window.location.hash = "admin";
+        break;
+
+      case "deejay":
+        this.showUserContent = false;
+        this.showAdminContent = false;
+        this.showDeejayContent = true;
+        window.location.hash = "deejay";
+        break;
+
+      default:
+        break;
+    }
   }
 }

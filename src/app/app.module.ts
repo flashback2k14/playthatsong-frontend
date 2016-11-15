@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { routing } from "./app.routing";
-
 import { AppComponent } from './components/app/app.component';
 import { PtsLoginComponent } from './components/pts-login/pts-login.component';
 import { PtsRegisterComponent } from './components/pts-register/pts-register.component';
@@ -18,7 +16,6 @@ import { PtsNotifyComponent } from './components/pts-notify/pts-notify.component
 import { AuthService } from "./services/auth.service";
 import { StorageService } from "./services/storage.service";
 import { UserService } from "./services/user.service";
-import { FuckRouterOutletService } from "./services/fuckrouteroutlet.service";
 
 import { HttpHelper } from "./helpers/http.helper";
 import { AuthHelper } from "./helpers/auth.helper";
@@ -38,14 +35,12 @@ import { AuthHelper } from "./helpers/auth.helper";
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
-    routing
+    HttpModule
   ],
   providers: [
     AuthService,
     StorageService,
     UserService,
-    FuckRouterOutletService,
     HttpHelper,
     AuthHelper
   ],

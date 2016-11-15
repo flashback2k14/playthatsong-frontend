@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
 import { User } from "./../../models/user";
 
 @Component({
@@ -10,7 +9,7 @@ import { User } from "./../../models/user";
 export class PtsDeejayListComponent implements OnInit {
   @Input() deejays: User[];
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit() {}
 
