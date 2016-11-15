@@ -3,6 +3,8 @@ import { Http, Response } from "@angular/http";
 
 import "rxjs/add/operator/toPromise";
 
+import { HttpHelper } from "./../helpers/http.helper";
+
 import { LoginData } from "../models/login-data";
 import { RegisterData } from "./../models/register-data";
 import { NotifyMessage } from "../models/notify-message";
@@ -12,8 +14,11 @@ import { NotifyMessage } from "../models/notify-message";
 export class AuthService {
   private baseUrl: string;
 
-  constructor (private http: Http) {
-    this.baseUrl = window.location.hostname === "localhost" ? "http://localhost:5005" : null;
+  constructor (
+    private httpHelper: HttpHelper, 
+    private http: Http
+  ) {
+    this.baseUrl = this.httpHelper.getBaseUrl();
   }
 
   login (username: string, password: string): Promise<LoginData> {

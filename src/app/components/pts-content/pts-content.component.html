@@ -1,9 +1,12 @@
-<div class="mdl-grid">
+<div class="mdl-grid" #ptsContent>
   <div class="mdl-cell mdl-cell--2-col"></div>
   <div class="mdl-cell mdl-cell--8-col">
     <p>
       pts-content works!
     </p>
+    <div *ngIf="deejays">
+      <pts-deejay-list [deejays]="deejays"></pts-deejay-list>
+    </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col"></div>
 </div>

@@ -1,7 +1,12 @@
-import { Component, ViewChild, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, AfterViewInit, AfterViewChecked } from "@angular/core";
 import { Router } from "@angular/router";
 
+import { PtsLoginComponent } from "./../pts-login/pts-login.component";
+import { PtsRegisterComponent } from "./../pts-register/pts-register.component";
+import { PtsNotifyComponent } from "./../pts-notify/pts-notify.component";
+
 import { StorageService } from "../../services/storage.service";
+import { FuckRouterOutletService } from "./../../services/fuckrouteroutlet.service";
 import { AuthHelper } from "./../../helpers/auth.helper";
 
 import { LoginData } from "../../models/login-data";
@@ -16,23 +21,24 @@ import { User } from "./../../models/user";
   styleUrls: ["./app.component.css"]
 })
 
-export class AppComponent implements OnInit {
-  @ViewChild("ptsLogin") ptsLogin;
-  @ViewChild("ptsRegister") ptsRegister;
-  @ViewChild("ptsNotify") ptsNotify;
+export class AppComponent implements AfterViewInit {
+  @ViewChild("ptsLogin") ptsLogin: PtsLoginComponent;
+  @ViewChild("ptsRegister") ptsRegister: PtsRegisterComponent;
+  @ViewChild("ptsNotify") ptsNotify: PtsNotifyComponent;
 
   private userIsLoggedIn: boolean;
   private userName: string;
 
   constructor (
     private storageService: StorageService,
+    private fuckRouterOutletService: FuckRouterOutletService,
     private authHelper: AuthHelper,
     private router: Router
   ) { 
     this.userIsLoggedIn = false;
   }
 
-  ngOnInit () {
+  ngAfterViewInit () {
     this.storageService.getMany([this.storageService.TOKENKEY, 
                                 this.storageService.EXPIREKEY,
                                 this.storageService.USEROBJECTKEY])
@@ -98,6 +104,7 @@ export class AppComponent implements OnInit {
         this.handleNotifyUser(new NotifyMessage(true, "User successfully logged out!"));
         this.handleOpenLogin();
         this.navigateTo("/");
+        this.fuckRouterOutletService.clearUserComponentData();
         this.userIsLoggedIn = false;
         this.userName = null;
       })
@@ -133,10 +140,11 @@ export class AppComponent implements OnInit {
       this.navigateTo("/deejay");
       this.userName = `${user.name} [D]`;
     }
-    // else stay at user route
+    // if user, go to user route
     if (!user.admin && !user.deejay) {
       this.navigateTo("/");
       this.userName = `${user.name} [10]`;
+      this.fuckRouterOutletService.loadUserComponentData();
     }
   }
 

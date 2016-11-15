@@ -1,6 +1,6 @@
 // Modules
 import { ModuleWithProviders } from "@angular/core";
-import { Routes, RouterModule} from "@angular/router";
+import { Routes, RouterModule } from "@angular/router";
 // Components
 import { PtsContentComponent } from "./components/pts-content/pts-content.component";
 import { PtsContentAdminComponent } from "./components/pts-content-admin/pts-content-admin.component";
