@@ -8,7 +8,7 @@ import { PtsLoginComponent } from './components/pts-login/pts-login.component';
 import { PtsRegisterComponent } from './components/pts-register/pts-register.component';
 import { PtsToolbarComponent } from './components/pts-toolbar/pts-toolbar.component';
 import { PtsContentComponent } from './components/pts-content/pts-content.component';
-import { PtsDeejayListComponent } from './components/pts-deejay-list/pts-deejay-list.component';
+import { PtsListViewComponent } from './components/pts-list-view/pts-list-view.component';
 import { PtsContentAdminComponent } from './components/pts-content-admin/pts-content-admin.component';
 import { PtsContentDeejayComponent } from './components/pts-content-deejay/pts-content-deejay.component';
 import { PtsNotifyComponent } from './components/pts-notify/pts-notify.component';
@@ -30,9 +30,9 @@ import { PtsListItemComponent } from './components/pts-list-item/pts-list-item.c
     PtsContentComponent,
     PtsContentAdminComponent,
     PtsContentDeejayComponent,
-    PtsDeejayListComponent,
-    PtsNotifyComponent,
-    PtsListItemComponent
+    PtsListViewComponent,
+    PtsListItemComponent,
+    PtsNotifyComponent
   ],
   imports: [
     BrowserModule,
