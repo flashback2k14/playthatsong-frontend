@@ -19,6 +19,7 @@ import { UserService } from "./services/user.service";
 
 import { HttpHelper } from "./helpers/http.helper";
 import { AuthHelper } from "./helpers/auth.helper";
+import { PtsListItemComponent } from './components/pts-list-item/pts-list-item.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AuthHelper } from "./helpers/auth.helper";
     PtsContentAdminComponent,
     PtsContentDeejayComponent,
     PtsDeejayListComponent,
-    PtsNotifyComponent
+    PtsNotifyComponent,
+    PtsListItemComponent
   ],
   imports: [
     BrowserModule,

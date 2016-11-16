@@ -12,8 +12,4 @@ export class PtsDeejayListComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {}
-
-  private goToDjEvents (dj: User): void {
-    
-  }
 }

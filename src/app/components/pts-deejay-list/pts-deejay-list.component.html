@@ -1,7 +1,6 @@
 <div>
-  <ul>
-    <li *ngFor="let dj of deejays" (click)="goToDjEvents(dj)">
-      {{dj.name}}
-    </li>
-  </ul>
+  <!-- headline -->
+  <div class="mdl-typography--display-2 headline--styling">Pick the DJ</div>
+  <!-- list view -->
+  <pts-list-item *ngFor="let dj of deejays" [item]="dj"></pts-list-item>
 </div>
