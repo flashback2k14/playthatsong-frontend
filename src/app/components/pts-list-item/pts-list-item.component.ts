@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output } from "@angular/core";
+import { EventEmitter } from "@angular/core";
+
 import { User } from "./../../models/user";
 
 
@@ -7,14 +9,16 @@ import { User } from "./../../models/user";
   templateUrl: './pts-list-item.component.html',
   styleUrls: ['./pts-list-item.component.css']
 })
-export class PtsListItemComponent implements OnInit {
+
+export class PtsListItemComponent {
   @Input() item: User;
+  @Output() goToEvents: EventEmitter<User>;
 
-  constructor() { }
-
-  ngOnInit() { }
+  constructor () {
+    this.goToEvents = new EventEmitter<User>();
+  }
 
   private goToNextStep (item: User): void {
-    alert(item._id);
+    this.goToEvents.emit(item);
   }
 }

@@ -150,7 +150,7 @@ export class AppComponent implements AfterViewInit {
     if (!user.admin && !user.deejay) {
       this.navigateTo("home");
       this.userName = `${user.name} [10]`;
-      this.ptsContent.loadData();
+      this.ptsContent.loadUserData();
     }
   }
 

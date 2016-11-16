@@ -1,4 +1,9 @@
 import { Injectable } from "@angular/core";
+import { Headers, Response } from "@angular/http";
+
+import { User } from "./../models/user";
+import { Event } from "./../models/event";
+import { NotifyMessage } from "./../models/notify-message";
 
 
 @Injectable()
@@ -6,5 +11,27 @@ export class HttpHelper {
 
   getBaseUrl (): string {
     return window.location.hostname === "localhost" ? "http://localhost:5005" : null;
+  }
+
+  getRequestHeader (token: string): Headers {
+    let header = new Headers();
+    header.append("x-access-token", token);
+    header.append("Content-Type", "application/json");
+    return header;
+  }
+
+  extractUserData (res: Response): User[] {
+    let data: User[] = res.json().users;
+    return data || [];
+  }
+
+  extractEventsData (res: Response): Event[] {
+    let data: Event[] = res.json().events;
+    return data || [];
+  }
+
+  extractError (res: Response): Promise<NotifyMessage> {
+    let error: NotifyMessage = res.json();
+    return Promise.reject(error || { });
   }
 }

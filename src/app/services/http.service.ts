@@ -1,0 +1,39 @@
+import { Injectable } from "@angular/core";
+import { Http, Headers, Response } from "@angular/http";
+
+import "rxjs/add/operator/toPromise";
+
+import { HttpHelper } from "./../helpers/http.helper";
+
+import { User } from "./../models/user";
+import { Event } from "./../models/event";
+import { NotifyMessage } from "./../models/notify-message";
+
+
+@Injectable()
+export class HttpService {
+  private baseUrl: string;
+
+  constructor (
+    private httpHelper: HttpHelper,
+    private http: Http
+  ) {
+    this.baseUrl = this.httpHelper.getBaseUrl();
+  }
+
+  getDeejays (token: string): Promise<User[]> {
+    return this.http
+      .get(`${this.baseUrl}/api/v1/users?flag=dj`, { headers: this.httpHelper.getRequestHeader(token) })
+      .toPromise()
+      .then(this.httpHelper.extractUserData)
+      .catch(this.httpHelper.extractError);
+  }
+
+  getEventsByDeejay (token: string, deejayId: string): Promise<Event[]> {
+    return this.http
+      .get(`${this.baseUrl}/api/v1/events?dj=${deejayId}`, { headers: this.httpHelper.getRequestHeader(token)})
+      .toPromise()
+      .then(this.httpHelper.extractEventsData)
+      .catch(this.httpHelper.extractError);
+  }
+}

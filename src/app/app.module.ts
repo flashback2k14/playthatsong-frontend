@@ -15,7 +15,7 @@ import { PtsNotifyComponent } from './components/pts-notify/pts-notify.component
 
 import { AuthService } from "./services/auth.service";
 import { StorageService } from "./services/storage.service";
-import { UserService } from "./services/user.service";
+import { HttpService } from "./services/http.service";
 
 import { HttpHelper } from "./helpers/http.helper";
 import { AuthHelper } from "./helpers/auth.helper";
@@ -42,7 +42,7 @@ import { PtsListItemComponent } from './components/pts-list-item/pts-list-item.c
   providers: [
     AuthService,
     StorageService,
-    UserService,
+    HttpService,
     HttpHelper,
     AuthHelper
   ],
