@@ -56,8 +56,7 @@ export class AppComponent implements AfterViewInit {
         }
         // check if login is expired
         if (this.authHelper.isLoginExpired(Number(items[1].value))) {
-          this.handleNotifyUser(new NotifyMessage(false, "User login is expired!"));
-          this.handleOpenLogin();
+          this.logout(new NotifyMessage(false, "User login is expired!"))
           return;
         }
         // set flags
@@ -101,12 +100,16 @@ export class AppComponent implements AfterViewInit {
    * LOGOUT
    */
   private handleLogoutUser (): void {
+    this.logout(new NotifyMessage(true, "User successfully logged out!"));
+  }
+
+  private logout (nm: NotifyMessage): void {
     this.storageService.removeMany([this.storageService.TOKENKEY, 
                                     this.storageService.EXPIREKEY,
                                     this.storageService.USEROBJECTKEY])
       .then(msg => {
         this.handleNotifyUser(msg);
-        this.handleNotifyUser(new NotifyMessage(true, "User successfully logged out!"));
+        this.handleNotifyUser(nm);
         this.handleOpenLogin();
         this.navigateTo("home");
         this.ptsContent.clearData();

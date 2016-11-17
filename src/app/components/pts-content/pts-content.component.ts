@@ -1,14 +1,19 @@
-import { Song } from "./../../models/song";
-import { Component, Output, EventEmitter, OnInit, ViewChild } from "@angular/core";
+import { 
+  Component, Output, EventEmitter, OnInit, OnDestroy, ViewChild 
+} from "@angular/core";
 
 import { HttpService } from "./../../services/http.service";
 import { StorageService } from "./../../services/storage.service";
 
+import { SocketHelper } from "./../../helpers/socket.helper";
+
 import { User } from "./../../models/user";
 import { Event } from "./../../models/event";
+import { Song } from "./../../models/song";
+
 import { NotifyMessage } from "./../../models/notify-message";
 import { ContentType } from "./../../models/content-type";
-
+import { SocketEvents } from "./../../models/socket-events";
 
 @Component({
   selector: 'pts-content',
@@ -16,7 +21,7 @@ import { ContentType } from "./../../models/content-type";
   styleUrls: ['./pts-content.component.css']
 })
 
-export class PtsContentComponent implements OnInit {
+export class PtsContentComponent implements OnInit, OnDestroy {
   @Output() notifyUser: EventEmitter<NotifyMessage>;
 
   private showDeejayList: boolean;
@@ -34,7 +39,8 @@ export class PtsContentComponent implements OnInit {
 
   constructor (
     private httpService: HttpService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private socketHelper: SocketHelper
   ) { 
     this.notifyUser = new EventEmitter<NotifyMessage>();
     this.showDeejayList = false;
@@ -44,10 +50,76 @@ export class PtsContentComponent implements OnInit {
     this.contentState = ContentType.Clear;
   }
 
+  /**
+   * LIFE CYCLE EVENTS
+   */
   ngOnInit () {
     this.storageService.getOne(this.storageService.TOKENKEY)
       .then(tokenItem => this.userToken = tokenItem.value)
       .catch(error => this.notifyUser.emit(error));
+
+    this.initSocketListener(); 
+  }
+
+  ngOnDestroy () {
+    this.removeSocketListener();
+  }
+
+  private initSocketListener (): void {
+    /**
+     * ADDED
+     */
+    this.socketHelper.getSocket().on(SocketEvents.DEEJAYADDED, (addedDeejay) => {
+      this.deejays.push(addedDeejay);
+    });
+    this.socketHelper.getSocket().on(SocketEvents.EVENTADDED, (addedEvent) => {
+      this.events.push(addedEvent);
+    });
+    this.socketHelper.getSocket().on(SocketEvents.SONGADDED, (addedSong) => {
+      this.songs.push(addedSong);
+    });
+    /**
+     * UPDATED
+     */
+    this.socketHelper.getSocket().on(SocketEvents.DEEJAYUPDATED, (updatedDeejay) => {
+      let i: number = this.deejays.findIndex((el): boolean => { return el.name === updatedDeejay.name});
+      this.deejays = this.deejays.splice(i, 1, updatedDeejay);
+    });
+    this.socketHelper.getSocket().on(SocketEvents.EVENTUPDATED, (updatedEvent) => {
+      let i: number = this.events.findIndex((el): boolean => { return el.title === updatedEvent.title});
+      this.events = this.events.splice(i, 1, updatedEvent);
+    });
+    this.socketHelper.getSocket().on(SocketEvents.SONGUPDATED, (updatedSong) => {
+      let i: number = this.songs.findIndex((el): boolean => { return el.title === updatedSong.title});
+      this.songs = this.songs.splice(i, 1, updatedSong);
+    });
+    /**
+     * DELETED
+     */
+    this.socketHelper.getSocket().on(SocketEvents.DEEJAYDELETED, (deletedDeejay) => {
+      let i: number = this.deejays.findIndex((el): boolean => { return el.name === deletedDeejay.name});
+      this.deejays = this.deejays.slice(i, 1);
+    });
+    this.socketHelper.getSocket().on(SocketEvents.EVENTDELETED, (deletedEvent) => {
+      let i: number = this.events.findIndex((el): boolean => { return el.title === deletedEvent.title});
+      this.events = this.events.slice(i, 1);
+    });
+    this.socketHelper.getSocket().on(SocketEvents.SONGDELETED, (deletedSong) => {
+      let i: number = this.songs.findIndex((el): boolean => { return el.title === deletedSong.title});
+      this.songs = this.songs.slice(i, 1);
+    });
+  }
+
+  private removeSocketListener (): void {
+    this.socketHelper.getSocket().off(SocketEvents.DEEJAYADDED);
+    this.socketHelper.getSocket().off(SocketEvents.EVENTADDED);
+    this.socketHelper.getSocket().off(SocketEvents.SONGADDED);
+    this.socketHelper.getSocket().off(SocketEvents.DEEJAYUPDATED);
+    this.socketHelper.getSocket().off(SocketEvents.EVENTUPDATED);
+    this.socketHelper.getSocket().off(SocketEvents.SONGUPDATED);
+    this.socketHelper.getSocket().off(SocketEvents.DEEJAYDELETED);
+    this.socketHelper.getSocket().off(SocketEvents.EVENTDELETED);
+    this.socketHelper.getSocket().off(SocketEvents.SONGDELETED);
   }
 
   /**
