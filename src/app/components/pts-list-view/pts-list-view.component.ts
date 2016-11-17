@@ -8,14 +8,22 @@ import { User } from "./../../models/user";
   styleUrls: ['./pts-list-view.component.css']
 })
 export class PtsListViewComponent {
-  @Input() items: User[];
+  @Input() deejays: User[];
+  @Input() events: Event[];
+
   @Output() goToEvents: EventEmitter<User>;
+  @Output() goToSongs: EventEmitter<Event>;
 
   constructor () {
     this.goToEvents = new EventEmitter<User>();
+    this.goToSongs = new EventEmitter<Event>();
   }
 
   private handleGoToEvents (dj: User): void {
     this.goToEvents.emit(dj);
+  }
+
+  private handleGoToSongs (item: Event): void {
+    this.goToSongs.emit(item);
   }
 }

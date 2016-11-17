@@ -2,6 +2,7 @@ import { Component, Input, Output } from "@angular/core";
 import { EventEmitter } from "@angular/core";
 
 import { User } from "./../../models/user";
+import { Event } from "./../../models/event";
 
 
 @Component({
@@ -11,14 +12,22 @@ import { User } from "./../../models/user";
 })
 
 export class PtsListItemComponent {
-  @Input() item: User;
+  @Input() deejay: User;
+  @Input() event: Event;
+  
   @Output() goToEvents: EventEmitter<User>;
+  @Output() goToSongs: EventEmitter<Event>;
 
   constructor () {
     this.goToEvents = new EventEmitter<User>();
+    this.goToSongs = new EventEmitter<Event>();
   }
 
   private goToNextStep (item: User): void {
     this.goToEvents.emit(item);
+  }
+
+  private goToLastStep (item: Event): void {
+    this.goToSongs.emit(item);
   }
 }

@@ -1,9 +1,10 @@
 export class Event {
-  deejayId: String;
-  title: String;
-  location: String;
-  organizer: String;
+  _id: string;
+  deejayId: string;
+  title: string;
+  location: string;
+  organizer: string;
   eventDate: Date;
-  songs: [String];
+  songs: [string];
   created: Date
 }

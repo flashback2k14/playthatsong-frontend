@@ -3,16 +3,32 @@
   <div class="mdl-cell mdl-cell--8-col mdl-typography--text-center">
     <div *ngIf="showDeejayList">
       <div class="mdl-typography--display-2 headline--styling">Pick the DJ</div>
-      <pts-list-view [items]="deejays"
+      <pts-list-view [deejays]="deejays"
         (goToEvents)="handleGoToEvents($event)">
       </pts-list-view>
     </div>
 
     <div *ngIf="showEventsList">
       <div class="mdl-typography--display-2 headline--styling">Pick the Event</div>
-      <pts-list-view [items]="events">
+      <pts-list-view [events]="events"
+        (goToSongs)="handleGoToSongs($event)">
       </pts-list-view>
+    </div>
+
+    <div *ngIf="showSongsList">
+      <div class="mdl-typography--display-2 headline--styling">Playlist</div>
+      <ul>
+        <li *ngFor="let song of songs">{{song.title}}</li>
+      </ul>
     </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col"></div>
+
+  <!-- FAB -->
+  <button class="mdl-button mdl-js-button mdl-button--fab 
+                 mdl-js-ripple-effect back_button--colors
+                 fixed-fab-position"
+          (click)="goBack()" *ngIf="showBackButton">
+    <i class="material-icons">keyboard_backspace</i>
+  </button>
 </div>

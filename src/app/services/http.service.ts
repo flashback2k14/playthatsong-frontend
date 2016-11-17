@@ -7,6 +7,7 @@ import { HttpHelper } from "./../helpers/http.helper";
 
 import { User } from "./../models/user";
 import { Event } from "./../models/event";
+import { Song } from "./../models/song";
 import { NotifyMessage } from "./../models/notify-message";
 
 
@@ -34,6 +35,14 @@ export class HttpService {
       .get(`${this.baseUrl}/api/v1/events?dj=${deejayId}`, { headers: this.httpHelper.getRequestHeader(token)})
       .toPromise()
       .then(this.httpHelper.extractEventsData)
+      .catch(this.httpHelper.extractError);
+  }
+
+  getSongsByEvent (token: string, eventId: string): Promise<Song[]> {
+    return this.http
+      .get(`${this.baseUrl}/api/v1/events/${eventId}/songs`, { headers: this.httpHelper.getRequestHeader(token)})
+      .toPromise()
+      .then(this.httpHelper.extractSongsData)
       .catch(this.httpHelper.extractError);
   }
 }

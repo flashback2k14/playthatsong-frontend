@@ -1,5 +1,8 @@
 <div class="mdl-shadow--4dp card--styling">
-  <div class="mdl-typography--display-1 text--styling" 
-    (click)="goToNextStep(item)">{{item.name}}
+  <div *ngIf="deejay" class="mdl-typography--display-1 text--styling" 
+    (click)="goToNextStep(deejay)">{{deejay.name}}
+  </div>
+  <div *ngIf="event" class="mdl-typography--display-1 text--styling"
+    (click)="goToLastStep(event)">{{event.title}}
   </div>
 </div>

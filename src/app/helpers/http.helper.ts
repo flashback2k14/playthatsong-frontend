@@ -3,6 +3,7 @@ import { Headers, Response } from "@angular/http";
 
 import { User } from "./../models/user";
 import { Event } from "./../models/event";
+import { Song } from "./../models/song";
 import { NotifyMessage } from "./../models/notify-message";
 
 
@@ -27,6 +28,11 @@ export class HttpHelper {
 
   extractEventsData (res: Response): Event[] {
     let data: Event[] = res.json().events;
+    return data || [];
+  }
+
+  extractSongsData (res: Response): Song[] {
+    let data: Song[] = res.json().songs;
     return data || [];
   }
 
