@@ -31,8 +31,6 @@ export class PtsContentComponent implements OnInit, OnDestroy {
 
   private contentState: ContentType;
 
-  private userToken: string;
-
   private deejays: User[];
   private events: Event[];
   private songs: Song[];
@@ -54,10 +52,6 @@ export class PtsContentComponent implements OnInit, OnDestroy {
    * LIFE CYCLE EVENTS
    */
   ngOnInit () {
-    this.storageService.getOne(this.storageService.TOKENKEY)
-      .then(tokenItem => this.userToken = tokenItem.value)
-      .catch(error => this.notifyUser.emit(error));
-
     this.initSocketListener(); 
   }
 
@@ -141,38 +135,6 @@ export class PtsContentComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * HANDLE EVENTS
-   */
-  private handleGoToEvents (dj: User): void {
-    this.loadEventDataByDeejay(dj._id);
-  }
-
-  private handleGoToSongs (event: Event): void {
-    this.loadSongDataByEvent(event._id);
-  }
-
-  /**
-   * LOAD DATA - PRIVATE
-   */
-  private loadEventDataByDeejay (deejayId: string): void {
-    this.httpService.getEventsByDeejay(this.userToken, deejayId)
-      .then(data => {
-        this.events = data;
-        this.switchContentAreas("events");
-      })
-      .catch(error => this.notifyUser.emit(error));
-  }
-
-  private loadSongDataByEvent (eventId: string): void {
-    this.httpService.getSongsByEvent(this.userToken, eventId)
-      .then(data => {
-        this.songs = data;
-        this.switchContentAreas("songs");
-      })
-      .catch(error => this.notifyUser.emit(error));
-  }
-
-  /**
    * CONTENT UTIL
    */
   private switchContentAreas (area: string): void {
@@ -226,10 +188,54 @@ export class PtsContentComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * HANDLE EVENTS
+   */
+  private handleGoToEvents (dj: User): void {
+    this.storageService.getOne(this.storageService.TOKENKEY)
+      .then(tokenItem => this.loadEventDataByDeejay(tokenItem.value, dj._id))
+      .catch(error => this.notifyUser.emit(error));
+  }
+
+  private handleGoToSongs (event: Event): void {
+    this.storageService.getOne(this.storageService.TOKENKEY)
+      .then(tokenItem => this.loadSongDataByEvent(tokenItem.value, event._id))
+      .catch(error => this.notifyUser.emit(error));
+  }
+
+  private handleUpvoteSong (song: Song): void {
+
+  }
+
+  private handleDownvoteSong (song: Song): void {
+
+  }
+
+  /**
+   * LOAD DATA - PRIVATE
+   */
+  private loadEventDataByDeejay (token: string, deejayId: string): void {
+    this.httpService.getEventsByDeejay(token, deejayId)
+      .then(data => {
+        this.events = data;
+        this.switchContentAreas("events");
+      })
+      .catch(error => this.notifyUser.emit(error));
+  }
+
+  private loadSongDataByEvent (token: string, eventId: string): void {
+    this.httpService.getSongsByEvent(token, eventId)
+      .then(data => {
+        this.songs = data;
+        this.switchContentAreas("songs");
+      })
+      .catch(error => this.notifyUser.emit(error));
+  }
+
+  /**
    * LOAD DATA - PUBLIC
    */
-  loadUserData (): void {
-    this.httpService.getDeejays(this.userToken)
+  loadUserData (token: string): void {
+    this.httpService.getDeejays(token)
       .then(data => {
         this.deejays = data;
         this.switchContentAreas("deejay");

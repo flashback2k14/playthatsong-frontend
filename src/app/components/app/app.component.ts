@@ -63,7 +63,7 @@ export class AppComponent implements AfterViewInit {
         this.userIsLoggedIn = true;
         // navigate to specific route
         const user = this.authHelper.convertStringToUser(items[2].value);
-        this.decideWhereToGo(user);
+        this.decideWhereToGo(user, items[0].value);
         // show message if all is great
         this.handleNotifyUser(new NotifyMessage(true, "User successfully logged in!"));
       })
@@ -91,7 +91,7 @@ export class AppComponent implements AfterViewInit {
         // set flag
         this.userIsLoggedIn = true;
         // navigate to specific route
-        this.decideWhereToGo(ld.user);
+        this.decideWhereToGo(ld.user, ld.token);
       })
       .catch(error => this.handleNotifyUser(error));
   }
@@ -138,7 +138,7 @@ export class AppComponent implements AfterViewInit {
   /**
    * ROUTING
    */
-  private decideWhereToGo (user: User): void {
+  private decideWhereToGo (user: User, token: string): void {
     // if admin, go to admin route
     if (user.admin) {
       this.navigateTo("admin");
@@ -153,7 +153,7 @@ export class AppComponent implements AfterViewInit {
     if (!user.admin && !user.deejay) {
       this.navigateTo("home");
       this.userName = `${user.name} [10]`;
-      this.ptsContent.loadUserData();
+      this.ptsContent.loadUserData(token);
     }
   }
 

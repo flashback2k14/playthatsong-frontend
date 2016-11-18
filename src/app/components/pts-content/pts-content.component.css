@@ -4,11 +4,11 @@
 
 .fixed-fab-position {
   position: fixed;
-  bottom: 60px;
+  bottom: 24px;
   right: 60px;
 }
 
 .back_button--colors {
-  background: #FFEA00;
+  background: #FFD600; /*#FF1654;*/
   color: white;
 }

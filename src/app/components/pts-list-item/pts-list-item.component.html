@@ -1,8 +1,40 @@
-<div class="mdl-shadow--4dp card--styling">
-  <div *ngIf="deejay" class="mdl-typography--display-1 text--styling" 
+<!-- dj item -->
+<div *ngIf="deejay" class="mdl-shadow--4dp card--styling card--styling__padding">
+  <div class="mdl-typography--display-1 text--styling" 
     (click)="goToNextStep(deejay)">{{deejay.name}}
   </div>
-  <div *ngIf="event" class="mdl-typography--display-1 text--styling"
-    (click)="goToLastStep(event)">{{event.title}}
+</div>
+
+<!-- event item -->
+<div *ngIf="event" class="mdl-shadow--4dp card--styling card--styling__padding">
+  <div (click)="goToLastStep(event)">
+    <div class="mdl-typography--display-1 text--styling">{{event.title}}</div>
+    <div class="mdl-typography--headline text--styling">{{event.location}}</div>
+    <div class="mdl-typography--headline text--styling">{{event.organizer}}</div>
+    <div class="mdl-typography--title text--styling">{{event.eventDate}}</div>
+  </div>
+</div>
+  
+<!-- song item -->
+<div *ngIf="song" class="mdl-shadow--4dp card--styling">
+  <div  class="mdl-grid grid--styling">
+    <div class="mdl-cell mdl-cell--4-col item__left">
+      <button class="mdl-button mdl-js-button mdl-button--icon button--styling button--styling__top"
+        (click)="handleUpvoteSong(song)">
+        <i class="material-icons">keyboard_arrow_up</i>
+      </button>
+      <div class="mdl-typography--headline item__left--text">
+        {{calculatedSongVotes}}
+      </div>
+      <button class="mdl-button mdl-js-button mdl-button--icon button--styling"
+        (click)="handleDownvoteSong(song)">
+        <i class="material-icons">keyboard_arrow_down</i>
+      </button>
+    </div>
+    <div class="mdl-cell mdl-cell--8-col item__right">
+      <div class="mdl-typography--display-1 text--styling">{{song.title}}</div>
+      <div class="mdl-typography--headline text--styling">{{song.artist}}</div>
+      <div class="mdl-typography--title text--styling">{{song.created}}</div>
+    </div>
   </div>
 </div>

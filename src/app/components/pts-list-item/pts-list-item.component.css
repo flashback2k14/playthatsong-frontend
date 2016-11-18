@@ -1,9 +1,12 @@
 .card--styling {
   margin-bottom: 10px;
-  padding: 5px;
   background: white;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.card--styling__padding {
+  padding: 5px;
 }
 
 .card--styling:hover {
@@ -12,4 +15,33 @@
 
 .text--styling {
   color: #424242;
+  padding: 3px 0;
+}
+
+.grid--styling {
+  padding: 0;
+}
+
+.item__left {
+  margin: 0;
+  padding: 0;
+  background: #FFD600; /*#FF1654;*/
+  color: #FFFFFF;
+}
+
+.button--styling {
+  color: #FFFFFF;
+}
+
+.button--styling__top {
+  margin-top: 5px;
+}
+
+.item__left--text {
+  padding: 5px 0 5px 0;
+}
+
+.item__right {
+  margin: 0;
+  padding: 0;
 }
