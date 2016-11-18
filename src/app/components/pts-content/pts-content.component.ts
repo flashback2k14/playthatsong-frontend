@@ -81,33 +81,51 @@ export class PtsContentComponent implements OnInit, OnDestroy {
     /**
      * UPDATED
      */
-    this.socketHelper.getSocket().on(SocketEvents.DEEJAYUPDATED, (updatedDeejay) => {
-      let i: number = this.deejays.findIndex((el): boolean => { return el.name === updatedDeejay.name});
-      this.deejays = this.deejays.splice(i, 1, updatedDeejay);
-    });
-    this.socketHelper.getSocket().on(SocketEvents.EVENTUPDATED, (updatedEvent) => {
-      let i: number = this.events.findIndex((el): boolean => { return el.title === updatedEvent.title});
-      this.events = this.events.splice(i, 1, updatedEvent);
-    });
-    this.socketHelper.getSocket().on(SocketEvents.SONGUPDATED, (updatedSong) => {
-      let i: number = this.songs.findIndex((el): boolean => { return el.title === updatedSong.title});
-      this.songs = this.songs.splice(i, 1, updatedSong);
-    });
+    this.socketHelper.getSocket()
+      .on(SocketEvents.DEEJAYUPDATED, (updatedDeejay: User) => {
+        let i: number = this.deejays.findIndex((el): boolean => { 
+          return el._id === updatedDeejay._id;
+        });
+        this.deejays.splice(i, 1, updatedDeejay);
+      });
+    this.socketHelper.getSocket()
+      .on(SocketEvents.EVENTUPDATED, (updatedEvent: Event) => {
+        let i: number = this.events.findIndex((el): boolean => { 
+          return el._id === updatedEvent._id;
+        });
+        this.events.splice(i, 1, updatedEvent);
+      });
+    this.socketHelper.getSocket()
+      .on(SocketEvents.SONGUPDATED, (updatedSong: Song) => {
+        let i: number = this.songs.findIndex((el): boolean => { 
+          return el._id === updatedSong._id;
+        });
+        this.songs.splice(i, 1, updatedSong);
+      });
     /**
      * DELETED
      */
-    this.socketHelper.getSocket().on(SocketEvents.DEEJAYDELETED, (deletedDeejay) => {
-      let i: number = this.deejays.findIndex((el): boolean => { return el.name === deletedDeejay.name});
-      this.deejays = this.deejays.slice(i, 1);
-    });
-    this.socketHelper.getSocket().on(SocketEvents.EVENTDELETED, (deletedEvent) => {
-      let i: number = this.events.findIndex((el): boolean => { return el.title === deletedEvent.title});
-      this.events = this.events.slice(i, 1);
-    });
-    this.socketHelper.getSocket().on(SocketEvents.SONGDELETED, (deletedSong) => {
-      let i: number = this.songs.findIndex((el): boolean => { return el.title === deletedSong.title});
-      this.songs = this.songs.slice(i, 1);
-    });
+    this.socketHelper.getSocket()
+      .on(SocketEvents.DEEJAYDELETED, (deletedDeejay: User) => {
+        let i: number = this.deejays.findIndex((el): boolean => { 
+          return el._id === deletedDeejay._id;
+        });
+        this.deejays = this.deejays.slice(i, 1);
+      });
+    this.socketHelper.getSocket()
+      .on(SocketEvents.EVENTDELETED, (deletedEvent: Event) => {
+        let i: number = this.events.findIndex((el): boolean => { 
+          return el._id === deletedEvent._id;
+        });
+        this.events = this.events.slice(i, 1);
+      });
+    this.socketHelper.getSocket()
+      .on(SocketEvents.SONGDELETED, (deletedSong: Song) => {
+        let i: number = this.songs.findIndex((el): boolean => { 
+          return el._id === deletedSong._id
+        });
+        this.songs = this.songs.slice(i, 1);
+      });
   }
 
   private removeSocketListener (): void {
@@ -129,7 +147,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
     this.loadEventDataByDeejay(dj._id);
   }
 
-  private handleGoToSongs(event: Event): void {
+  private handleGoToSongs (event: Event): void {
     this.loadSongDataByEvent(event._id);
   }
 
@@ -222,7 +240,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
   /**
    * CLEAR DATA - PUBLIC
    */
-  clearData(): void {
+  clearData (): void {
     this.deejays = null;
     this.events = null;
     this.switchContentAreas("clear");
