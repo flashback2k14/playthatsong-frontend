@@ -203,11 +203,15 @@ export class PtsContentComponent implements OnInit, OnDestroy {
   }
 
   private handleUpvoteSong (song: Song): void {
-
+    this.storageService.getOne(this.storageService.TOKENKEY)
+      .then(tokenItem => this.patchSongDataById(tokenItem.value, song._id, "upvote"))
+      .catch(error => this.notifyUser.emit(error));
   }
 
   private handleDownvoteSong (song: Song): void {
-
+    this.storageService.getOne(this.storageService.TOKENKEY)
+      .then(tokenItem => this.patchSongDataById(tokenItem.value, song._id, "downvote"))
+      .catch(error => this.notifyUser.emit(error));
   }
 
   /**
@@ -240,6 +244,15 @@ export class PtsContentComponent implements OnInit, OnDestroy {
         this.deejays = data;
         this.switchContentAreas("deejay");
       })
+      .catch(error => this.notifyUser.emit(error));
+  }
+
+  /**
+   * PATCH SONG VOTES
+   */
+  private patchSongDataById (token: string, songId: string, route: string) {
+    this.httpService.patchSongById(token, songId, route)
+      .then(data => console.log("todo: recalc song order"))
       .catch(error => this.notifyUser.emit(error));
   }
 

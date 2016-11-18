@@ -32,7 +32,7 @@ export class HttpService {
 
   getEventsByDeejay (token: string, deejayId: string): Promise<Event[]> {
     return this.http
-      .get(`${this.baseUrl}/api/v1/events?dj=${deejayId}`, { headers: this.httpHelper.getRequestHeader(token)})
+      .get(`${this.baseUrl}/api/v1/events?dj=${deejayId}`, { headers: this.httpHelper.getRequestHeader(token) })
       .toPromise()
       .then(this.httpHelper.extractEventsData)
       .catch(this.httpHelper.extractError);
@@ -40,9 +40,17 @@ export class HttpService {
 
   getSongsByEvent (token: string, eventId: string): Promise<Song[]> {
     return this.http
-      .get(`${this.baseUrl}/api/v1/events/${eventId}/songs`, { headers: this.httpHelper.getRequestHeader(token)})
+      .get(`${this.baseUrl}/api/v1/events/${eventId}/songs`, { headers: this.httpHelper.getRequestHeader(token) })
       .toPromise()
       .then(this.httpHelper.extractSongsData)
+      .catch(this.httpHelper.extractError);
+  }
+
+  patchSongById (token: string, songId: string, route: string): Promise<Song> {
+    return this.http
+      .patch(`${this.baseUrl}/api/v1/songs/${songId}/${route}`, null, { headers: this.httpHelper.getRequestHeader(token) })
+      .toPromise()
+      .then(this.httpHelper.extractSongData)
       .catch(this.httpHelper.extractError);
   }
 }

@@ -36,6 +36,11 @@ export class HttpHelper {
     return data || [];
   }
 
+  extractSongData (res: Response): Song {
+    let data: Song = res.json().updatedSong;
+    return data || { } as Song;
+  }
+
   extractError (res: Response): Promise<NotifyMessage> {
     let error: NotifyMessage = res.json();
     return Promise.reject(error || { });
