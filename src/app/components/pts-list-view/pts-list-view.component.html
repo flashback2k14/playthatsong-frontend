@@ -13,7 +13,8 @@
   </div>
   <!-- song -->
   <div *ngIf="songs">
-    <pts-list-item *ngFor="let song of songs" [song]="song"
+    <pts-list-item *ngFor="let song of songs; let isLast=last" 
+      [song]="song" [isLastItem]="isLast"
       (upvoteSong)="handleUpvoteSong($event)"
       (downvoteSong)="handleDownvoteSong($event)">
     </pts-list-item>

@@ -1,26 +1,43 @@
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--2-col"></div>
-  <div class="mdl-cell mdl-cell--8-col mdl-typography--text-center">
-    <div *ngIf="showDeejayList">
+  <div class="mdl-cell mdl-cell--8-col">
+    <!-- deejays -->
+    <div *ngIf="showDeejayList" class="mdl-typography--text-center">
       <div class="mdl-typography--display-2 headline--styling">Pick the DJ</div>
       <pts-list-view [deejays]="deejays"
         (goToEvents)="handleGoToEvents($event)">
       </pts-list-view>
     </div>
-
-    <div *ngIf="showEventsList">
+    <!-- events -->
+    <div *ngIf="showEventsList" class="mdl-typography--text-center">
       <div class="mdl-typography--display-2 headline--styling">Pick the Event</div>
       <pts-list-view [events]="events"
         (goToSongs)="handleGoToSongs($event)">
       </pts-list-view>
     </div>
-
-    <div *ngIf="showSongsList">
+    <!-- songs -->
+    <div *ngIf="showSongsList" class="mdl-typography--text-center">
       <div class="mdl-typography--display-2 headline--styling">Playlist</div>
       <pts-list-view [songs]="songs"
         (upvoteSong)="handleUpvoteSong($event)"
         (downvoteSong)="handleDownvoteSong($event)">
       </pts-list-view>
+    </div>
+    <!-- new song -->
+    <div *ngIf="showSongsList">
+      <div class="mdl-shadow--4dp new-song-container">
+        <div class="mdl-textfield mdl-js-textfield input-styling" #txtSongTitleContainer>
+          <input class="mdl-textfield__input" type="text" 
+            placeholder="enter the song title" id="songTitle" #txtSongTitle>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield input-styling" #txtSongArtistContainer>
+          <input class="mdl-textfield__input" type="text" 
+            placeholder="enter the song artist" id="songArtist" #txtSongArtist>
+        </div>
+        <button type="button" class="mdl-button send_button--colors" 
+          (click)="sendNewSong(txtSongTitle, txtSongArtist)">send
+        </button>
+      </div>
     </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col"></div>

@@ -27,6 +27,8 @@
   padding: 0;
   background: #FFD600; /*#FF1654;*/
   color: #FFFFFF;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .button--styling {
@@ -44,4 +46,8 @@
 .item__right {
   margin: 0;
   padding: 0;
+}
+
+.last-item {
+  margin-bottom: 90px;
 }

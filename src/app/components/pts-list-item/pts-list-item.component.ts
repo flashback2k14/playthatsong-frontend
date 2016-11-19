@@ -15,6 +15,7 @@ export class PtsListItemComponent implements OnInit {
   @Input() deejay: User;
   @Input() event: Event;
   @Input() song: Song;
+  @Input() isLastItem: boolean;
   
   @Output() goToEvents: EventEmitter<User>;
   @Output() goToSongs: EventEmitter<Event>;
@@ -24,6 +25,7 @@ export class PtsListItemComponent implements OnInit {
   private calculatedSongVotes: number;
 
   constructor () {
+    this.isLastItem = false;
     this.goToEvents = new EventEmitter<User>();
     this.goToSongs = new EventEmitter<Event>();
     this.upvoteSong = new EventEmitter<Song>();

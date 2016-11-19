@@ -16,7 +16,7 @@
 </div>
   
 <!-- song item -->
-<div *ngIf="song" class="mdl-shadow--4dp card--styling">
+<div *ngIf="song" class="mdl-shadow--4dp card--styling" [class.last-item]="isLastItem">
   <div  class="mdl-grid grid--styling">
     <div class="mdl-cell mdl-cell--4-col item__left">
       <button class="mdl-button mdl-js-button mdl-button--icon button--styling button--styling__top"

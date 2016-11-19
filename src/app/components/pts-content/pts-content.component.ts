@@ -30,6 +30,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
   private showBackButton: boolean;
 
   private contentState: ContentType;
+  private pickedEventId: string;
 
   private deejays: User[];
   private events: Event[];
@@ -46,6 +47,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
     this.showSongsList = false;
     this.showBackButton = false;
     this.contentState = ContentType.Clear;
+    this.pickedEventId = null;
   }
 
   /**
@@ -71,6 +73,8 @@ export class PtsContentComponent implements OnInit, OnDestroy {
     });
     this.socketHelper.getSocket().on(SocketEvents.SONGADDED, (addedSong) => {
       this.songs.push(addedSong);
+      // wait if item is added to the DOM
+      setTimeout(() => { this.scrollToBottom()}, 200);
     });
     /**
      * UPDATED
@@ -176,6 +180,11 @@ export class PtsContentComponent implements OnInit, OnDestroy {
     }
   }
 
+  private scrollToBottom (): void {
+    let items = document.querySelectorAll("pts-list-item");
+    items[items.length-1].scrollIntoView(true);
+  }
+
   private goBack (): void {
     if (this.contentState === ContentType.Songs) {
       this.switchContentAreas("events");
@@ -230,6 +239,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
     this.httpService.getSongsByEvent(token, eventId)
       .then(data => {
         this.songs = data;
+        this.pickedEventId = eventId;
         this.switchContentAreas("songs");
       })
       .catch(error => this.notifyUser.emit(error));
@@ -252,7 +262,41 @@ export class PtsContentComponent implements OnInit, OnDestroy {
    */
   private patchSongDataById (token: string, songId: string, route: string) {
     this.httpService.patchSongById(token, songId, route)
-      .then(data => console.log("todo: recalc song order"))
+      .then(msg => {
+        this.notifyUser.emit(msg); 
+        console.log("todo: recalc song order");
+      })
+      .catch(error => this.notifyUser.emit(error));
+  }
+
+  /**
+   * CREATE NEW SONG
+   */
+  private sendNewSong (songTitle: HTMLInputElement, songArtist: HTMLInputElement): void {
+    let title = songTitle.value;
+    let artist = songArtist.value;
+
+    if (title.length <= 0) {
+      title = "unknown";
+    }
+    if (artist.length <= 0) {
+      artist = "unknown";
+    }
+    if (title === "unknown" && artist === "unknown") {
+      this.notifyUser.emit(new NotifyMessage(false, "Both parts are unknown! This is not legit!"));
+      return;
+    }
+
+    this.storageService.getOne(this.storageService.TOKENKEY)
+      .then(tokenItem => {
+        this.httpService.createSongByEventId(tokenItem.value, this.pickedEventId, {artist: artist, title: title})
+          .then(msg => {
+            this.notifyUser.emit(msg);
+            songTitle.value = null;
+            songArtist.value = null;
+          })
+          .catch(error => this.notifyUser.emit(error));
+      })
       .catch(error => this.notifyUser.emit(error));
   }
 

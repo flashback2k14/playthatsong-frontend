@@ -46,11 +46,19 @@ export class HttpService {
       .catch(this.httpHelper.extractError);
   }
 
-  patchSongById (token: string, songId: string, route: string): Promise<Song> {
+  patchSongById (token: string, songId: string, route: string): Promise<NotifyMessage> {
     return this.http
       .patch(`${this.baseUrl}/api/v1/songs/${songId}/${route}`, null, { headers: this.httpHelper.getRequestHeader(token) })
       .toPromise()
-      .then(this.httpHelper.extractSongData)
+      .then(() => new NotifyMessage(true, `Song successfully ${route}d!`))
+      .catch(this.httpHelper.extractError);
+  }
+
+  createSongByEventId (token: string, eventId: string, body: any): Promise<NotifyMessage> {
+    return this.http
+      .post(`${this.baseUrl}/api/v1/events/${eventId}/songs`, body, { headers: this.httpHelper.getRequestHeader(token) })
+      .toPromise()
+      .then(() => new NotifyMessage(true, "Song successfully saved!"))
       .catch(this.httpHelper.extractError);
   }
 }
