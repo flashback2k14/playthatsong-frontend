@@ -11,7 +11,7 @@
     <div class="mdl-typography--display-1 text--styling">{{event.title}}</div>
     <div class="mdl-typography--headline text--styling">{{event.location}}</div>
     <div class="mdl-typography--headline text--styling">{{event.organizer}}</div>
-    <div class="mdl-typography--title text--styling">{{event.eventDate}}</div>
+    <div class="mdl-typography--title text--styling">{{event.eventDate | date:'dd.MM.yy HH:mm:ss' }}</div>
   </div>
 </div>
   
@@ -34,7 +34,7 @@
     <div class="mdl-cell mdl-cell--8-col item__right">
       <div class="mdl-typography--display-1 text--styling">{{song.title}}</div>
       <div class="mdl-typography--headline text--styling">{{song.artist}}</div>
-      <div class="mdl-typography--title text--styling">{{song.created}}</div>
+      <div class="mdl-typography--title text--styling">{{song.created | date:'dd.MM.yy HH:mm:ss' }}</div>
     </div>
   </div>
 </div>

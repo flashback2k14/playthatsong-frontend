@@ -72,6 +72,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
       this.events.push(addedEvent);
     });
     this.socketHelper.getSocket().on(SocketEvents.SONGADDED, (addedSong) => {
+      // add new song
       this.songs.push(addedSong);
       // wait if item is added to the DOM
       setTimeout(() => { this.scrollToBottom()}, 200);
@@ -99,6 +100,8 @@ export class PtsContentComponent implements OnInit, OnDestroy {
           return el._id === updatedSong._id;
         });
         this.songs.splice(i, 1, updatedSong);
+        // recalc list ViewChild
+        this.songs = this.songs.sort(this.recalcListview);
       });
     /**
      * DELETED
@@ -182,7 +185,16 @@ export class PtsContentComponent implements OnInit, OnDestroy {
 
   private scrollToBottom (): void {
     let items = document.querySelectorAll("pts-list-item");
-    items[items.length-1].scrollIntoView(true);
+    items[items.length-1].scrollIntoView({block: "start", behavior: "smooth"});
+  }
+
+  private recalcListview (a: Song, b: Song): number {
+    let aVotes = a.upvotes - a.downvotes;
+    let bVotes = b.upvotes - b.downvotes;
+    
+    if (aVotes > bVotes) return -1;
+    if (aVotes < bVotes) return 1;
+    return 0;
   }
 
   private goBack (): void {
