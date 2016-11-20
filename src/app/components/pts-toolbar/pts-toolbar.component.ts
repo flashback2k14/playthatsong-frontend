@@ -13,6 +13,7 @@ export class PtsToolbarComponent {
 
   @Input() isLoggedIn: boolean;
   @Input() username: string;
+  @Input() votes: any;
 
   private title: string = "play that song!";
 

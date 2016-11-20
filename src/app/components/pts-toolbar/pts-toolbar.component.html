@@ -4,8 +4,8 @@
   </div>
   <div class="mdl-cell mdl-cell--6-col"></div>
   <div class="mdl-cell mdl-cell--3-col mdl-typography--text-right">
-    <span class="text-position text-color">
-      {{username}}
+    <span *ngIf="username" class="text-position text-color">
+      {{username}} - [{{votes}}]
     </span>
     <!-- login -->
     <button class="mdl-button mdl-js-button mdl-button--icon icon-spacing"

@@ -46,17 +46,21 @@ export class HttpService {
       .catch(this.httpHelper.extractError);
   }
 
-  patchSongById (token: string, songId: string, route: string): Promise<NotifyMessage> {
+  patchSongById (token: string, songId: string, route: string, userId: string): Promise<User> {
     return this.http
-      .patch(`${this.baseUrl}/api/v1/songs/${songId}/${route}`, null, { headers: this.httpHelper.getRequestHeader(token) })
+      .patch(`${this.baseUrl}/api/v1/songs/${songId}/${route}`, 
+              { userid: userId }, 
+              { headers: this.httpHelper.getRequestHeader(token) })
       .toPromise()
-      .then(() => new NotifyMessage(true, `Song successfully ${route}d!`))
+      .then(this.httpHelper.extractPatchData)
       .catch(this.httpHelper.extractError);
   }
 
   createSongByEventId (token: string, eventId: string, body: any): Promise<NotifyMessage> {
     return this.http
-      .post(`${this.baseUrl}/api/v1/events/${eventId}/songs`, body, { headers: this.httpHelper.getRequestHeader(token) })
+      .post(`${this.baseUrl}/api/v1/events/${eventId}/songs`, 
+              body, 
+              { headers: this.httpHelper.getRequestHeader(token) })
       .toPromise()
       .then(() => new NotifyMessage(true, "Song successfully saved!"))
       .catch(this.httpHelper.extractError);

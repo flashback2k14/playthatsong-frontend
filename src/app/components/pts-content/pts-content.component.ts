@@ -1,6 +1,8 @@
 import { 
-  Component, Output, EventEmitter, OnInit, OnDestroy, ViewChild 
+  Component, Input, Output, EventEmitter, OnInit, OnDestroy, ViewChild 
 } from "@angular/core";
+
+import { Observable, Subscription } from "rxjs/Rx";
 
 import { HttpService } from "./../../services/http.service";
 import { StorageService } from "./../../services/storage.service";
@@ -23,6 +25,9 @@ import { SocketEvents } from "./../../models/socket-events";
 
 export class PtsContentComponent implements OnInit, OnDestroy {
   @Output() notifyUser: EventEmitter<NotifyMessage>;
+  @Output() changeUserVoting: EventEmitter<number>;
+
+  @Input() userId: string;
 
   private showDeejayList: boolean;
   private showEventsList: boolean;
@@ -36,18 +41,26 @@ export class PtsContentComponent implements OnInit, OnDestroy {
   private events: Event[];
   private songs: Song[];
 
+  private isFirstVote: boolean;
+  private resetChangeUserVotingTimer: Observable<number>;
+  private resetChangeUserVotingSubscription: Subscription;
+  private WAITTIME: number = 180000; // 1000 * 60 * 60 + 1; // one hour + one minute to wait for the backend is ready
+  private USERVOTING: number = 10;
+
   constructor (
     private httpService: HttpService,
     private storageService: StorageService,
     private socketHelper: SocketHelper
   ) { 
     this.notifyUser = new EventEmitter<NotifyMessage>();
+    this.changeUserVoting = new EventEmitter<number>();
     this.showDeejayList = false;
     this.showEventsList = false;
     this.showSongsList = false;
     this.showBackButton = false;
     this.contentState = ContentType.Clear;
     this.pickedEventId = null;
+    this.isFirstVote = true;
   }
 
   /**
@@ -59,6 +72,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy () {
     this.removeSocketListener();
+    this.resetChangeUserVotingSubscription.unsubscribe();
   }
 
   private initSocketListener (): void {
@@ -273,10 +287,21 @@ export class PtsContentComponent implements OnInit, OnDestroy {
    * PATCH SONG VOTES
    */
   private patchSongDataById (token: string, songId: string, route: string) {
-    this.httpService.patchSongById(token, songId, route)
-      .then(msg => {
-        this.notifyUser.emit(msg); 
-        console.log("todo: recalc song order");
+    // init timer for first voting
+    if (this.isFirstVote) {
+      this.resetChangeUserVotingTimer = Observable.timer(this.WAITTIME);
+      this.resetChangeUserVotingSubscription = this.resetChangeUserVotingTimer
+        .subscribe(t => {
+          this.changeUserVoting.emit(this.USERVOTING);
+          this.isFirstVote = true;
+        });
+      this.isFirstVote = false;
+    }
+    // perform up or downvote
+    this.httpService.patchSongById(token, songId, route, this.userId)
+      .then(user => {
+        this.notifyUser.emit(new NotifyMessage(true, `Song successfully ${route}d!`)); 
+        this.changeUserVoting.emit(user.availableVotes);
       })
       .catch(error => this.notifyUser.emit(error));
   }
@@ -318,6 +343,8 @@ export class PtsContentComponent implements OnInit, OnDestroy {
   clearData (): void {
     this.deejays = null;
     this.events = null;
+    this.songs = null;
+    this.pickedEventId = null;
     this.switchContentAreas("clear");
   }
 }

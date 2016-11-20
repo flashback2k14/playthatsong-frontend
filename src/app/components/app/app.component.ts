@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, Input, ViewChild, AfterViewInit } from "@angular/core";
 
 import { PtsLoginComponent } from "./../pts-login/pts-login.component";
 import { PtsRegisterComponent } from "./../pts-register/pts-register.component";
@@ -27,7 +27,9 @@ export class AppComponent implements AfterViewInit {
   @ViewChild("ptsNotify") ptsNotify: PtsNotifyComponent;
 
   private userIsLoggedIn: boolean;
+  private userId: string;
   private userName: string;
+  private votes: any;
   private showUserContent: boolean;
   private showAdminContent: boolean;
   private showDeejayContent: boolean;
@@ -37,7 +39,9 @@ export class AppComponent implements AfterViewInit {
     private authHelper: AuthHelper
   ) { 
     this.userIsLoggedIn = false;
+    this.userId = null;
     this.userName = null;
+    this.votes = null;
     this.showUserContent = true;
     this.showAdminContent = false;
     this.showDeejayContent = false;
@@ -115,6 +119,7 @@ export class AppComponent implements AfterViewInit {
         this.ptsContent.clearData();
         this.userIsLoggedIn = false;
         this.userName = null;
+        this.votes = null;
       })
       .catch(error => this.handleNotifyUser(error));
   }
@@ -132,6 +137,7 @@ export class AppComponent implements AfterViewInit {
 
   private handleDialogCanceled (): void {
     this.userName = "view only";
+    this.votes = "VO";
     this.navigateTo("home");
   }
 
@@ -142,17 +148,21 @@ export class AppComponent implements AfterViewInit {
     // if admin, go to admin route
     if (user.admin) {
       this.navigateTo("admin");
-      this.userName = `${user.name} [A]`;
+      this.userName = user.name;
+      this.votes = "A";
     }
     // if deejay, go to dj route
     if (user.deejay) {
       this.navigateTo("deejay");
-      this.userName = `${user.name} [D]`;
+      this.userName = user.name;
+      this.votes = "D";
     }
     // if user, go to user route
     if (!user.admin && !user.deejay) {
       this.navigateTo("home");
-      this.userName = `${user.name} [10]`;
+      this.userId = user._id;
+      this.userName = user.name;
+      this.votes = user.availableVotes;
       this.ptsContent.loadUserData(token);
     }
   }
@@ -183,5 +193,12 @@ export class AppComponent implements AfterViewInit {
       default:
         break;
     }
+  }
+
+  /**
+   * VOTING
+   */
+  private handleChangeUserVoting (availableVotes: number): void {
+    this.votes = availableVotes;
   }
 }

@@ -15,12 +15,15 @@
   (openRegister)="handleOpenRegister()"
   (logoutUser)="handleLogoutUser()"
   [isLoggedIn]="userIsLoggedIn"
-  [username]="userName">
+  [username]="userName"
+  [votes]="votes">
 </pts-toolbar>
 
 <pts-content #ptsContent 
   *ngIf="showUserContent"
-  (notifyUser)="handleNotifyUser($event)">
+  (notifyUser)="handleNotifyUser($event)"
+  (changeUserVoting)="handleChangeUserVoting($event)"
+  [userId]="userId">
 </pts-content>
 
 <pts-content-admin #ptsContentAdmin

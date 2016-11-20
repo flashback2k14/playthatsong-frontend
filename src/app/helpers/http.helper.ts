@@ -36,6 +36,11 @@ export class HttpHelper {
     return data || [];
   }
 
+  extractPatchData (res: Response): User {
+    let data: User = res.json().updatedUser;
+    return data || { } as User;
+  }
+
   extractError (res: Response): Promise<NotifyMessage> {
     let error: NotifyMessage = res.json();
     return Promise.reject(error || { });
