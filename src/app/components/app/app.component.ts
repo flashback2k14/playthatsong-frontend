@@ -49,8 +49,8 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit () {
     this.storageService.getMany([this.storageService.TOKENKEY, 
-                                this.storageService.EXPIREKEY,
-                                this.storageService.USEROBJECTKEY])
+                                 this.storageService.EXPIREKEY,
+                                 this.storageService.USEROBJECTKEY])
       .then(items => {
         // check if token is available
         if (!items[0].value) {
@@ -136,9 +136,10 @@ export class AppComponent implements AfterViewInit {
   }
 
   private handleDialogCanceled (): void {
-    this.userName = "view only";
-    this.votes = "VO";
-    this.navigateTo("home");
+    this.navigateTo("noauth");
+    this.userName = "No Auth";
+    this.votes = "NA";
+    this.ptsContent.showNoAuthView();
   }
 
   /**
@@ -169,6 +170,13 @@ export class AppComponent implements AfterViewInit {
 
   private navigateTo (contentArea: string): void {
     switch (contentArea) {
+      case "noauth":
+        this.showUserContent = true;
+        this.showAdminContent = false;
+        this.showDeejayContent = false;
+        window.location.hash = "noauth";
+        break;
+
       case "home":
         this.showUserContent = true;
         this.showAdminContent = false;

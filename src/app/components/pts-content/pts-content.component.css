@@ -34,3 +34,8 @@
   /*background: #FFD600;*/
   color: #FFFFFF;
 }
+
+.no_auth {
+  margin-top: 150px;
+  line-height: 2em;
+}

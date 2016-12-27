@@ -62,7 +62,7 @@ export class PtsLoginComponent implements AfterViewInit {
       .then(data => {
         this.notifyUser.emit(new NotifyMessage(true, `${data.user.name} successfully logged in!`));
         this.loginUser.emit(data);
-        this.cancelDialog();
+        this.cancelDialog(false);
       })
       .catch(error => {
         this.notifyUser.emit(error);
@@ -70,10 +70,12 @@ export class PtsLoginComponent implements AfterViewInit {
       });
   }
 
-  private cancelDialog (): void {
+  private cancelDialog (shouldFireEvent: boolean): void {
     this.clearInputs(true);
-    this.loginCanceled.emit();
     this.neLoginDialog.close();
+    if (shouldFireEvent) {
+      this.loginCanceled.emit();
+    }
   }
 
   private clearInputs (fullClear: boolean) {

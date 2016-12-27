@@ -29,6 +29,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
 
   @Input() userId: string;
 
+  private showNoAuth: boolean;
   private showDeejayList: boolean;
   private showEventsList: boolean;
   private showSongsList: boolean;
@@ -54,6 +55,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
   ) { 
     this.notifyUser = new EventEmitter<NotifyMessage>();
     this.changeUserVoting = new EventEmitter<number>();
+    this.showNoAuth = false;
     this.showDeejayList = false;
     this.showEventsList = false;
     this.showSongsList = false;
@@ -72,7 +74,9 @@ export class PtsContentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy () {
     this.removeSocketListener();
-    this.resetChangeUserVotingSubscription.unsubscribe();
+    if (this.resetChangeUserVotingSubscription) {
+      this.resetChangeUserVotingSubscription.unsubscribe();
+    }
   }
 
   private initSocketListener (): void {
@@ -160,7 +164,17 @@ export class PtsContentComponent implements OnInit, OnDestroy {
    */
   private switchContentAreas (area: string): void {
     switch (area) {
+      case "noauth": 
+        this.showNoAuth = true;
+        this.showDeejayList = false;
+        this.showEventsList = false;
+        this.showSongsList = false;
+        this.showBackButton = false;
+        this.contentState = ContentType.Noauth;
+        break;
+
       case "deejay":
+        this.showNoAuth = false;
         this.showDeejayList = true;
         this.showEventsList = false;
         this.showSongsList = false;
@@ -169,6 +183,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
         break;
       
       case "events":
+        this.showNoAuth = false;
         this.showDeejayList = false;
         this.showEventsList = true;
         this.showSongsList = false;
@@ -177,6 +192,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
         break;
 
       case "songs":
+        this.showNoAuth = false;
         this.showDeejayList = false;
         this.showEventsList = false;
         this.showSongsList = true;
@@ -185,6 +201,7 @@ export class PtsContentComponent implements OnInit, OnDestroy {
         break;
       
       case "clear":
+        this.showNoAuth = false;
         this.showDeejayList = false;
         this.showEventsList = false;
         this.showSongsList = false;
@@ -346,5 +363,12 @@ export class PtsContentComponent implements OnInit, OnDestroy {
     this.songs = null;
     this.pickedEventId = null;
     this.switchContentAreas("clear");
+  }
+
+  /**
+   * NO AUTH - PUBLIC
+   */
+  showNoAuthView (): void {
+    this.switchContentAreas("noauth");
   }
 }
