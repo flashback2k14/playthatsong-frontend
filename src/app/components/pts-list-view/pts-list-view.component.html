@@ -1,0 +1,22 @@
+<div>
+  <!-- deejay -->
+  <div *ngIf="deejays">
+    <pts-list-item *ngFor="let deejay of deejays" 
+      [deejay]="deejay" (goToEvents)="handleGoToEvents($event)">
+    </pts-list-item>
+  </div>
+  <!-- event -->
+  <div *ngIf="events">
+    <pts-list-item *ngFor="let event of events"
+      [event]="event" (goToSongs)="handleGoToSongs($event)">
+    </pts-list-item>
+  </div>
+  <!-- song -->
+  <div *ngIf="songs">
+    <pts-list-item *ngFor="let song of songs; let isLast=last" 
+      [song]="song" [isLastItem]="isLast"
+      (upvoteSong)="handleUpvoteSong($event)"
+      (downvoteSong)="handleDownvoteSong($event)">
+    </pts-list-item>
+  </div>
+</div>

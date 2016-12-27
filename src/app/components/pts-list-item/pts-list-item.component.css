@@ -1,0 +1,53 @@
+.card--styling {
+  margin-bottom: 10px;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.card--styling__padding {
+  padding: 5px;
+}
+
+.card--styling:hover {
+  box-shadow: 0 16px 24px 2px rgba(0,0,0,.14),0 6px 30px 5px rgba(0,0,0,.12),0 8px 10px -5px rgba(0,0,0,.2);
+}
+
+.text--styling {
+  color: #424242;
+  padding: 3px 0;
+}
+
+.grid--styling {
+  padding: 0;
+}
+
+.item__left {
+  margin: 0;
+  padding: 0;
+  background: #FFD600; /*#FF1654;*/
+  color: #FFFFFF;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.button--styling {
+  color: #FFFFFF;
+}
+
+.button--styling__top {
+  margin-top: 5px;
+}
+
+.item__left--text {
+  padding: 5px 0 5px 0;
+}
+
+.item__right {
+  margin: 0;
+  padding: 0;
+}
+
+.last-item {
+  margin-bottom: 90px;
+}

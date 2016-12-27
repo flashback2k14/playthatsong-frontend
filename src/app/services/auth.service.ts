@@ -3,7 +3,10 @@ import { Http, Response } from "@angular/http";
 
 import "rxjs/add/operator/toPromise";
 
+import { HttpHelper } from "./../helpers/http.helper";
+
 import { LoginData } from "../models/login-data";
+import { RegisterData } from "./../models/register-data";
 import { NotifyMessage } from "../models/notify-message";
 
 
@@ -11,8 +14,11 @@ import { NotifyMessage } from "../models/notify-message";
 export class AuthService {
   private baseUrl: string;
 
-  constructor (private http: Http) {
-    this.baseUrl = window.location.hostname === "localhost" ? "http://localhost:5005" : null;
+  constructor (
+    private httpHelper: HttpHelper, 
+    private http: Http
+  ) {
+    this.baseUrl = this.httpHelper.getBaseUrl();
   }
 
   login (username: string, password: string): Promise<LoginData> {
@@ -28,8 +34,26 @@ export class AuthService {
       .catch(this.extractError);
   }
 
+  register (username: string, password: string): Promise<RegisterData> {
+    let user = {
+      name: username,
+      password: password
+    };
+    
+    return this.http
+      .post(`${this.baseUrl}/api/v1/auth/reigster`, user)
+      .toPromise()
+      .then(this.extractRegisterData)
+      .catch(this.extractError);
+  }
+
   private extractData (res: Response) {
     let data: LoginData = res.json();
+    return data || { };
+  }
+
+  private extractRegisterData (res: Response) {
+    let data: RegisterData = res.json();
     return data || { };
   }
 

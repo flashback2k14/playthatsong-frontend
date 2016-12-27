@@ -1,5 +1,6 @@
+import { NotifyMessage } from "./../../models/notify-message";
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
-declare var componentHandler: any;
+
 
 @Component({
   selector: 'pts-notify',

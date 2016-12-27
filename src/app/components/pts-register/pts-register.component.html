@@ -1,5 +1,5 @@
-<dialog class="mdl-dialog dialog-styling" #loginDialog>
-  <h4 class="mdl-dialog__title dialog-styling_title">login</h4>
+<dialog class="mdl-dialog dialog-styling" #registerDialog>
+  <h4 class="mdl-dialog__title dialog-styling_title">Sign up</h4>
   <div class="mdl-dialog__content dialog-styling_content">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label input-styling"
       #txtUsernameContainer>
@@ -11,13 +11,18 @@
       <input class="mdl-textfield__input" type="password" #txtPassword id="password">
       <label class="mdl-textfield__label input-styling" for="password">enter your password</label>
     </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label input-styling"
+      #txtPasswordRepeatContainer>
+      <input class="mdl-textfield__input" type="password" #txtPasswordRepeat id="passwordRepeat">
+      <label class="mdl-textfield__label input-styling" for="passwordRepeat">repeat your password</label>
+    </div>
   </div>
   <div class="mdl-dialog__actions dialog-styling_actions">
     <button type="button" class="mdl-button button-styling" 
-      (click)="login()">login
+      (click)="register()">sign up
     </button>
     <button type="button" class="mdl-button button-styling" 
-      (click)="cancelDialog(true)">cancel
+      (click)="cancelDialog()">cancel
     </button>
   </div>
 </dialog>

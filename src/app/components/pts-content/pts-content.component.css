@@ -1,0 +1,41 @@
+.headline--styling {
+  margin-bottom: 20px;
+}
+
+.fixed-fab-position {
+  position: fixed;
+  bottom: 20px;
+  right: 60px;
+}
+
+.back_button--colors {
+  background: #FFD600; /*#FF1654;*/
+  color: #FFFFFF;
+}
+
+.new-song-container {
+  position: fixed;
+  bottom: 24px;
+  width: 64%;
+  margin: 0;
+  padding: 5px;
+  background: #37474F;
+  border-radius: 4px;
+}
+
+.input-styling {
+  width: 44%;
+  margin: 0 5px 0 5px;
+  padding: 0 5px 0 5px;
+  color: #FFFFFF;
+}
+
+.send_button--colors {
+  /*background: #FFD600;*/
+  color: #FFFFFF;
+}
+
+.no_auth {
+  margin-top: 150px;
+  line-height: 2em;
+}

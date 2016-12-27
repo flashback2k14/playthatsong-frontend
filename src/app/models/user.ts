@@ -3,6 +3,8 @@ export class User {
   name: string;
   password: string;
   admin: boolean;
-  deejay: boolean
+  deejay: boolean;
   created: Date;
+  availableVotes: number;
+  firstVoting: Date;
 }

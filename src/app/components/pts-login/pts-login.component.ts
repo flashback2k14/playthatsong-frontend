@@ -15,7 +15,8 @@ import { NotifyMessage } from "../../models/notify-message";
 
 export class PtsLoginComponent implements AfterViewInit {
   @Output() notifyUser: EventEmitter<NotifyMessage>;
-  @Output() loginData: EventEmitter<LoginData>;
+  @Output() loginUser: EventEmitter<LoginData>;
+  @Output() loginCanceled: EventEmitter<void>;
 
   @ViewChild("loginDialog") loginDialog;
   @ViewChild("txtUsernameContainer") txtUsernameContainer;
@@ -31,7 +32,8 @@ export class PtsLoginComponent implements AfterViewInit {
 
   constructor (private authService: AuthService) { 
     this.notifyUser = new EventEmitter<NotifyMessage>();
-    this.loginData = new EventEmitter<LoginData>();
+    this.loginUser = new EventEmitter<LoginData>();
+    this.loginCanceled = new EventEmitter<void>();
   }
 
   ngAfterViewInit () {
@@ -59,8 +61,8 @@ export class PtsLoginComponent implements AfterViewInit {
     this.authService.login(username, password)
       .then(data => {
         this.notifyUser.emit(new NotifyMessage(true, `${data.user.name} successfully logged in!`));
-        this.loginData.emit(data);
-        this.cancelDialog();
+        this.loginUser.emit(data);
+        this.cancelDialog(false);
       })
       .catch(error => {
         this.notifyUser.emit(error);
@@ -68,9 +70,12 @@ export class PtsLoginComponent implements AfterViewInit {
       });
   }
 
-  private cancelDialog (): void {
+  private cancelDialog (shouldFireEvent: boolean): void {
     this.clearInputs(true);
     this.neLoginDialog.close();
+    if (shouldFireEvent) {
+      this.loginCanceled.emit();
+    }
   }
 
   private clearInputs (fullClear: boolean) {

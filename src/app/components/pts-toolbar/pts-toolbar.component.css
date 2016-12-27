@@ -1,12 +1,13 @@
+.text-position {
+  margin-top: 10px;
+  margin-right: 5px;
+}
+
 .text-color {
   color: #FFFFFF;
 }
 
 .icon-spacing {
-  margin-top: 5px;
+  margin-top: -2px;
   margin-left: 10px;
-}
-
-.tooltip-styling {
-  background: #607D8B;
 }

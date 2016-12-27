@@ -9,17 +9,17 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class PtsToolbarComponent {
   @Output() openLogin: EventEmitter<void>;
   @Output() openRegister: EventEmitter<void>;
-  @Output() openEvent: EventEmitter<void>;
   @Output() logoutUser: EventEmitter<void>;
 
   @Input() isLoggedIn: boolean;
+  @Input() username: string;
+  @Input() votes: any;
 
   private title: string = "play that song!";
 
   constructor () {
     this.openLogin = new EventEmitter<void>();
     this.openRegister = new EventEmitter<void>();
-    this.openEvent = new EventEmitter<void>();
     this.logoutUser = new EventEmitter<void>();
   }
 
@@ -30,10 +30,6 @@ export class PtsToolbarComponent {
   private openRegisterDialog (): void {
     this.openRegister.emit();
   } 
-
-  private openEventDialog (): void {
-    this.openEvent.emit();
-  }
 
   private logout (): void {
     this.logoutUser.emit();
